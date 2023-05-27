@@ -1,0 +1,90 @@
+:root {
+	font-family: "Plus Jakarta Sans", system-ui, Avenir, Helvetica, Arial,
+		sans-serif;
+	line-height: 1.5;
+	font-weight: 400;
+
+	color-scheme: light dark;
+	color: var(--clr-text);
+	background-color: var(--bg);
+
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-text-size-adjust: 100%;
+
+	--clr-violet: rgb(208, 171, 243);
+	--clr-purple: rgb(161, 97, 221);
+	--clr-text: rgba(255, 255, 255, 0.87);
+	--clr-text-alt: rgb(110, 110, 110);
+
+	--dark-gray: #333333;
+	--light-gray: #666666;
+
+	--bg: #121212;
+	--bg-field: #1a1a1a;
+	--bg-component: #1d1d1d;
+	--bg-shadow: rgba(0, 0, 0, 0.5);
+}
+
+a {
+	font-weight: 500;
+	color: var(--clr-violet);
+	text-decoration: inherit;
+}
+a:hover {
+	color: #535bf2;
+}
+
+body {
+	margin: 0;
+	display: flex;
+	place-items: center;
+	min-width: 320px;
+	min-height: 100vh;
+}
+
+h1 {
+	font-size: 2.5em;
+	line-height: 1.1;
+}
+
+h3 {
+	margin-top: 0;
+	font-size: 1.25em;
+	font-weight: 700;
+	word-spacing: 5px;
+	color: var(--clr-purple);
+	text-transform: uppercase;
+	border-bottom: 2px solid var(--dark-gray);
+}
+
+input {
+	padding: 0.4em 1.2em;
+	background-color: var(--bg-field);
+	border: 1px solid var(--dark-gray);
+}
+
+input:focus,
+textarea:focus {
+	outline: 1px solid var(--light-gray);
+}
+
+button {
+	border: 1px solid transparent;
+	padding: 0.6em 1.2em;
+	font-size: 1em;
+	font-weight: 500;
+	font-family: inherit;
+	background-color: var(--clr-purple);
+	cursor: pointer;
+	transition: border-color 0.25s;
+}
+button:hover {
+	border-color: var(--clr-violet);
+}
+button:focus,
+button:focus-visible {
+	outline: 4px auto -webkit-focus-ring-color;
+}
