@@ -63,6 +63,13 @@
 	flex-direction: column;
 }
 
+.loan__text {
+	margin-bottom: 2rem;
+	margin-top: 0.25rem;
+	font-size: 0.9rem;
+	word-spacing: 0.25rem;
+}
+
 .loan__form {
 	row-gap: 1.25rem;
 }
