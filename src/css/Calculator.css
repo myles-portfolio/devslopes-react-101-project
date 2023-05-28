@@ -89,6 +89,13 @@
 
 .payment__button {
 	margin-top: 2rem;
+	transition: transform 0.3s ease-in-out;
+}
+
+.payment__button:hover {
+	transform: translateY(-5px);
+	background-color: var(--clr-violet);
+	box-shadow: 10px 10px 20px var(--bg-shadow);
 }
 
 .payments__remaining {
@@ -96,13 +103,13 @@
 	align-items: center;
 	justify-content: space-between;
 	background-color: var(--bg-field);
-	margin-top: 27px;
+	margin-top: 20px;
 }
 
 .payments__remaining p:nth-child(1) {
 	font-size: 0.75rem;
 	max-width: 200px;
-	margin-left: 20px;
+	margin: 3px 0 3px 20px;
 }
 
 .payments__remaining p:nth-child(2) {

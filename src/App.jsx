@@ -10,9 +10,10 @@ function App() {
 		const transactionBalance = balance;
 		const transactionPayment = parseFloat(payment);
 		const isOverPayment = overPayment;
+		const transactionDate = new Date().toLocaleString();
 		const updatedTransaction = [
 			...transactions,
-			[transactionBalance, transactionPayment, isOverPayment],
+			[transactionPayment, isOverPayment, transactionBalance, transactionDate],
 		];
 
 		setTransactions(updatedTransaction);

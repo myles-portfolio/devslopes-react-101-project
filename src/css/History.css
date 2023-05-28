@@ -1,12 +1,11 @@
+.hi__container,
 .history__list {
 	display: flex;
 	flex-direction: column;
 }
 
-.history__header,
-.history__item {
-	display: flex;
-	justify-content: space-evenly;
+.history__header {
+	border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .hh__title {
@@ -14,4 +13,25 @@
 	font-weight: 600;
 	text-transform: uppercase;
 	font-size: 0.75rem;
+	margin-bottom: 5px;
+}
+
+.history__item,
+.history__header {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	align-items: center;
+	gap: 10px;
+}
+
+.history__item:not(:first-of-type) {
+	border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.hi__detail {
+	font-size: 0.75rem;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	margin: 5px 0;
 }
