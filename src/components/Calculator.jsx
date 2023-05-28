@@ -1,6 +1,6 @@
 import { Loan } from "./Loan";
 import { Payment } from "./Payment";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { calculateRemainingPayments, calculateMinimumPayment } from "../utils";
 
 export function Calculator() {
@@ -39,46 +39,88 @@ export function Calculator() {
 		setInterestValue(value);
 	};
 
-	const updateCurrentBalance = (value) => {
-		setBalance(value);
-	};
-
 	const updateRemainingPayments = () => {
 		setRemainingPayments((prevRemainingPayments) => prevRemainingPayments - 1);
 	};
 
 	const handleChange = (inputId, value) => {
-		if (inputId === "loan") {
-			updateLoanValue(value);
-		} else if (inputId === "interest") {
-			updateInterestValue(value);
-		} else if (inputId === "payment") {
-			setPaymentAmount(value);
-			setPaymentError(false);
+		switch (inputId) {
+			case "loan":
+				updateLoanValue(value);
+				break;
+			case "interest":
+				updateInterestValue(value);
+				break;
+			case "payment":
+				setPaymentAmount(value);
+				setPaymentError(false);
+				break;
+			default:
+				break;
 		}
 	};
 
+	const paymentInputRef = useRef(null);
+
 	const handleSubmitPayment = (event) => {
 		event.preventDefault();
+		const newBalance = currentBalance - parseFloat(paymentAmount);
+		const overPaymentAmount =
+			parseFloat(paymentAmount) - parseFloat(minimumPayment);
+		const adjustedBalance = newBalance - overPaymentAmount;
+
 		if (paymentAmount < minimumPayment) {
-			setPaymentError(true);
-			setIsModalOpen(true);
+			handleUnderPayment();
+		} else if (paymentAmount === minimumPayment) {
+			handleMinimumPayment(newBalance, interestValue);
+		} else if (paymentAmount > minimumPayment) {
+			handleOverPayment(adjustedBalance, interestValue);
+		}
+
+		paymentInputRef.current.value = "";
+	};
+
+	const handleNegativeBalance = () => {
+		setMinimumPayment(0);
+		setBalance(0);
+		setRemainingPayments(0);
+	};
+
+	const handleUnderPayment = () => {
+		setPaymentError(true);
+		setIsModalOpen(true);
+	};
+
+	const handleMinimumPayment = (newBalance, interestValue) => {
+		if (newBalance <= 0) {
+			handleNegativeBalance();
 		} else {
-			const newBalance = currentBalance - parseFloat(paymentAmount);
-			updateCurrentBalance(newBalance);
-			if (newBalance <= 0) {
-				setMinimumPayment(0);
-				setBalance(0);
-				setRemainingPayments(0);
-			} else {
-				const newMinimumPayment = calculateMinimumPayment(
-					newBalance,
-					interestValue
-				);
-				setMinimumPayment(newMinimumPayment);
-				updateRemainingPayments();
-			}
-			setPaymentAmount("");
+			const newMinimumPayment = calculateMinimumPayment(
+				newBalance,
+				interestValue
+			);
+			setMinimumPayment(newMinimumPayment);
+			updateRemainingPayments();
+			setBalance(newBalance);
+		}
+	};
+
+	const handleOverPayment = (adjustedBalance, interestValue) => {
+		if (adjustedBalance <= 0) {
+			handleNegativeBalance();
+		} else {
+			const newMinimumPayment = calculateMinimumPayment(
+				adjustedBalance,
+				interestValue
+			);
+			setMinimumPayment(newMinimumPayment);
+			const newPaymentsRemaining = calculateRemainingPayments(
+				adjustedBalance,
+				interestValue
+			);
+			setRemainingPayments(newPaymentsRemaining);
+			updateRemainingPayments();
+			setBalance(adjustedBalance);
 		}
 	};
 
@@ -93,6 +135,7 @@ export function Calculator() {
 				error={paymentError}
 				modalState={isModalOpen}
 				setModalState={() => setIsModalOpen(false)}
+				paymentInputRef={paymentInputRef}
 			/>
 		</div>
 	);

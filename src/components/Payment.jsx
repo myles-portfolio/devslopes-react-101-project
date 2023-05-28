@@ -9,6 +9,7 @@ export function Payment({
 	error,
 	modalState,
 	setModalState,
+	paymentInputRef,
 }) {
 	return (
 		<div className="component__base">
@@ -38,6 +39,7 @@ export function Payment({
 							onChange={(e) => handleChange("payment", e.target.value)}
 							inputNotation="$USD"
 							inputSubtext=""
+							inputRef={paymentInputRef}
 						/>
 						<button className="payment__button" onClick={handleSubmitPayment}>
 							Submit Payment

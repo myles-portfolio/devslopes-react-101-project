@@ -6,6 +6,7 @@ export function Input({
 	onChange,
 	inputNotation,
 	inputSubtext,
+	inputRef,
 }) {
 	return (
 		<div id={inputId} className="input__field">
@@ -15,6 +16,7 @@ export function Input({
 					type={inputType}
 					placeholder={inputPlaceholderText}
 					onChange={onChange}
+					ref={inputRef}
 				/>
 				<p className="input__note">{inputNotation}</p>
 			</div>
