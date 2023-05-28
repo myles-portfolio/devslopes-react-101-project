@@ -23,6 +23,7 @@ export function Input({
 					onChange={onChange}
 					ref={inputRef}
 					{...readOnlyProps}
+					max="999999999"
 				/>
 				<p className="input__note">{inputNotation}</p>
 			</div>

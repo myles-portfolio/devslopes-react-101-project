@@ -90,24 +90,15 @@ export function Calculator({
 	const handleSubmitPayment = (event) => {
 		event.preventDefault();
 
-		if (paymentAmount < minimumPayment) {
+		const parsedPaymentAmount = parseFloat(paymentAmount);
+
+		if (parsedPaymentAmount < minimumPayment) {
 			handleUnderPayment();
-		} else if (paymentAmount === minimumPayment) {
-			const newBalance = currentBalance - parseFloat(paymentAmount);
-			handleMinimumPayment(newBalance, interestValue, paymentAmount);
-		} else if (paymentAmount > minimumPayment) {
-			let overPaymentInterest = calculateInterestPayment(
-				currentBalance,
-				interestValue
-			);
-			overPaymentInterest = overPaymentInterest.toFixed(2);
-			overPaymentInterest = parseFloat(overPaymentInterest);
-			handleOverPayment(
-				currentBalance,
-				overPaymentInterest,
-				interestValue,
-				paymentAmount
-			);
+		} else if (Math.abs(parsedPaymentAmount - minimumPayment) < 0.01) {
+			const newBalance = currentBalance - parsedPaymentAmount;
+			handleMinimumPayment(newBalance, interestValue, parsedPaymentAmount);
+		} else if (parsedPaymentAmount > minimumPayment) {
+			handleOverPayment(currentBalance, interestValue, parsedPaymentAmount);
 		}
 
 		paymentInputRef.current.value = "";
@@ -139,12 +130,13 @@ export function Calculator({
 		}
 	};
 
-	const handleOverPayment = (
-		currentBalance,
-		overPaymentInterest,
-		interestValue,
-		paymentAmount
-	) => {
+	const handleOverPayment = (currentBalance, interestValue, paymentAmount) => {
+		let overPaymentInterest = calculateInterestPayment(
+			currentBalance,
+			interestValue
+		);
+		overPaymentInterest = overPaymentInterest.toFixed(2);
+		overPaymentInterest = parseFloat(overPaymentInterest);
 		paymentAmount = parseFloat(paymentAmount);
 		const principalPayment = paymentAmount - overPaymentInterest;
 		let newBalance = currentBalance - principalPayment;
