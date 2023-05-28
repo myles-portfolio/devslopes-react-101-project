@@ -47,7 +47,7 @@
 	justify-content: space-between;
 }
 
-.ultraTop .resetBtn {
+.button__default {
 	margin: 0.5rem 0;
 	background-color: var(--clr-purple);
 	padding: 0.25rem 0.5rem;
@@ -55,12 +55,12 @@
 	transition: transform 0.3s ease-in-out;
 }
 
-.resetBtn:hover {
+.button__default:hover {
 	transform: translateY(-5px);
 	background-color: var(--clr-violet);
 }
 
-.resetBtn i {
+.button__default i {
 	font-size: 1rem;
 }
 

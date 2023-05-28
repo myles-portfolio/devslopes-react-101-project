@@ -1,6 +1,11 @@
 import { Input } from "./Input";
 
-export function Loan({ handleChange, paymentsLeft }) {
+export function Loan({
+	handleChange,
+	paymentsLeft,
+	loanInputRef,
+	interestInputRef,
+}) {
 	return (
 		<div className="component__base">
 			<h3>TELL US ABOUT YOUR LOAN</h3>
@@ -11,7 +16,7 @@ export function Loan({ handleChange, paymentsLeft }) {
 				minimum monthly payment.
 			</p>
 
-			<form className="loan__form">
+			<form id="calcForm" className="loan__form">
 				<Input
 					inputId="loan"
 					inputLabel="Loan Amount:"
@@ -20,6 +25,7 @@ export function Loan({ handleChange, paymentsLeft }) {
 					onChange={(e) => handleChange("loan", e.target.value)}
 					inputNotation="$USD"
 					inputSubtext=""
+					inputRef={loanInputRef}
 				/>
 				<Input
 					inputId="interest"
@@ -29,6 +35,7 @@ export function Loan({ handleChange, paymentsLeft }) {
 					onChange={(e) => handleChange("interest", e.target.value)}
 					inputNotation="%"
 					inputSubtext="*Fixed Annual"
+					inputRef={interestInputRef}
 				/>
 			</form>
 

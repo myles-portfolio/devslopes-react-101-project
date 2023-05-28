@@ -41,3 +41,7 @@ export function calculateRemainingPayments(loanTotal, interestValueInput) {
 	}
 	return remainingPayments;
 }
+
+export function clearInputs() {
+	document.getElementById("calcForm").reset();
+}

@@ -1,6 +1,7 @@
 .input__field,
 .loan__form,
-.minimum__payment {
+.minimum__payment,
+.payment__form {
 	display: flex;
 	flex-direction: column;
 }
@@ -42,14 +43,6 @@
 	word-spacing: 0.25rem;
 }
 
-.payment__details {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	gap: 1rem;
-}
-
 .balance {
 	padding-right: 0.5rem;
 	min-width: 210px;
@@ -87,8 +80,20 @@
 	row-gap: 0.5rem;
 }
 
+.payment__form {
+	row-gap: 0.75rem;
+}
+
+.payment__details {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
+}
+
 .payment__button {
-	margin-top: 2rem;
+	margin-top: 1rem;
 	transition: transform 0.3s ease-in-out;
 }
 

@@ -4,15 +4,22 @@ import "../css/Calculator.css";
 import { useState, useEffect, useRef } from "react";
 import { calculateRemainingPayments, calculateMinimumPayment } from "../utils";
 
-export function Calculator({ recordPayment }) {
-	const [loanValueInput, setLoanValue] = useState(null);
-	const [interestValueInput, setInterestValue] = useState(null);
+export function Calculator({
+	recordPayment,
+	loanValueInput,
+	setLoanValue,
+	interestValueInput,
+	setInterestValue,
+	minimumPayment,
+	setMinimumPayment,
+	paymentAmount,
+	setPaymentAmount,
+	paymentsRemaining,
+	setRemainingPayments,
+}) {
 	const [currentBalance, setBalance] = useState(0);
 	const [paymentError, setPaymentError] = useState(false);
-	const [paymentAmount, setPaymentAmount] = useState("");
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [minimumPayment, setMinimumPayment] = useState(0);
-	const [paymentsRemaining, setRemainingPayments] = useState(0);
 
 	const loanValue = parseFloat(loanValueInput);
 	const interestValue = parseFloat(interestValueInput);
@@ -30,7 +37,13 @@ export function Calculator({ recordPayment }) {
 			setRemainingPayments("--");
 			setMinimumPayment(0);
 		}
-	}, [loanValue, interestValue, paymentsLeft]);
+	}, [
+		loanValue,
+		interestValue,
+		paymentsLeft,
+		setMinimumPayment,
+		setRemainingPayments,
+	]);
 
 	const updateLoanValue = (value) => {
 		setLoanValue(value);
@@ -62,6 +75,8 @@ export function Calculator({ recordPayment }) {
 	};
 
 	const paymentInputRef = useRef(null);
+	const loanInputRef = useRef(0);
+	const interestInputRef = useRef(0);
 
 	const handleSubmitPayment = (event) => {
 		event.preventDefault();
@@ -139,7 +154,12 @@ export function Calculator({ recordPayment }) {
 
 	return (
 		<div style={{ display: "flex", gap: "10px" }}>
-			<Loan handleChange={handleChange} paymentsLeft={paymentsRemaining} />
+			<Loan
+				handleChange={handleChange}
+				paymentsLeft={paymentsRemaining}
+				loanInputRef={loanInputRef}
+				interestInputRef={interestInputRef}
+			/>
 			<Payment
 				handleChange={handleChange}
 				minimumPayment={minimumPayment}
