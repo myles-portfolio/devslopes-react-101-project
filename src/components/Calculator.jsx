@@ -2,7 +2,11 @@ import { Loan } from "./Loan";
 import { Payment } from "./Payment";
 import "../css/Calculator.css";
 import { useState, useEffect, useRef } from "react";
-import { calculateRemainingPayments, calculateMinimumPayment } from "../utils";
+import {
+	calculateRemainingPayments,
+	calculateMinimumPayment,
+	calculateInterestPayment,
+} from "../utils";
 
 export function Calculator({
 	recordPayment,
@@ -53,6 +57,11 @@ export function Calculator({
 		setInterestValue(value);
 	};
 
+	const updateCurrentBalance = (value) => {
+		value = parseFloat(value);
+		setBalance(value);
+	};
+
 	const updateRemainingPayments = () => {
 		setRemainingPayments((prevRemainingPayments) => prevRemainingPayments - 1);
 	};
@@ -80,19 +89,22 @@ export function Calculator({
 
 	const handleSubmitPayment = (event) => {
 		event.preventDefault();
-		const newBalance = currentBalance - parseFloat(paymentAmount);
-		const overPaymentAmount =
-			parseFloat(paymentAmount) - parseFloat(minimumPayment);
-		const adjustedBalance = newBalance - overPaymentAmount;
 
 		if (paymentAmount < minimumPayment) {
 			handleUnderPayment();
 		} else if (paymentAmount === minimumPayment) {
+			const newBalance = currentBalance - parseFloat(paymentAmount);
 			handleMinimumPayment(newBalance, interestValue, paymentAmount);
 		} else if (paymentAmount > minimumPayment) {
+			let overPaymentInterest = calculateInterestPayment(
+				currentBalance,
+				interestValue
+			);
+			overPaymentInterest = overPaymentInterest.toFixed(2);
+			overPaymentInterest = parseFloat(overPaymentInterest);
 			handleOverPayment(
-				newBalance,
-				adjustedBalance,
+				currentBalance,
+				overPaymentInterest,
 				interestValue,
 				paymentAmount
 			);
@@ -123,32 +135,35 @@ export function Calculator({
 			setMinimumPayment(newMinimumPayment);
 			updateRemainingPayments();
 			recordPayment(newBalance, paymentAmount, false);
-			setBalance(newBalance);
+			updateCurrentBalance(newBalance);
 		}
 	};
 
 	const handleOverPayment = (
-		newBalance,
-		adjustedBalance,
+		currentBalance,
+		overPaymentInterest,
 		interestValue,
 		paymentAmount
 	) => {
-		if (adjustedBalance <= 0) {
+		paymentAmount = parseFloat(paymentAmount);
+		const principalPayment = paymentAmount - overPaymentInterest;
+		let newBalance = currentBalance - principalPayment;
+		if (newBalance <= 0) {
 			handleNegativeBalance();
 		} else {
 			const newMinimumPayment = calculateMinimumPayment(
-				adjustedBalance,
+				newBalance,
 				interestValue
 			);
 			setMinimumPayment(newMinimumPayment);
 			const newPaymentsRemaining = calculateRemainingPayments(
-				adjustedBalance,
+				newBalance,
 				interestValue
 			);
 			setRemainingPayments(newPaymentsRemaining);
 			updateRemainingPayments();
 			recordPayment(newBalance, paymentAmount, true);
-			setBalance(adjustedBalance);
+			updateCurrentBalance(newBalance);
 		}
 	};
 

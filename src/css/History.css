@@ -5,7 +5,7 @@
 }
 
 .history__header {
-	border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+	border-bottom: 1px solid var(--clr-divider);
 }
 
 .hh__title {
@@ -16,7 +16,12 @@
 	margin-bottom: 5px;
 }
 
-.history__item,
+.hi__container {
+	max-height: 200px;
+	overflow-y: auto;
+}
+
+.history__items,
 .history__header {
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
@@ -24,8 +29,8 @@
 	gap: 10px;
 }
 
-.history__item:not(:first-of-type) {
-	border-top: 1px solid rgba(255, 255, 255, 0.05);
+.history__items:not(:first-of-type) {
+	border-top: 1px solid var(--clr-divider);
 }
 
 .hi__detail {
@@ -34,4 +39,5 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	margin: 5px 0;
+	color: var(--clr-text);
 }

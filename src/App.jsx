@@ -14,7 +14,7 @@ function App() {
 	const [transactions, setTransactions] = useState([]);
 
 	const recordPayment = (balance, payment, overPayment) => {
-		const transactionBalance = balance;
+		const transactionBalance = parseFloat(balance.toFixed(2));
 		const transactionPayment = parseFloat(payment);
 		const isOverPayment = overPayment;
 		const transactionDate = new Date().toLocaleString();
@@ -40,31 +40,35 @@ function App() {
 
 	return (
 		<>
-			<div className="ultraTop">
-				<h1>Debt-Free Calculator</h1>
-				<Button
-					className="button__default"
-					onClick={handleCalculatorReset}
-					text={resetIcon}
-				/>
-			</div>
-			<div className="top">
-				<Calculator
-					recordPayment={recordPayment}
-					loanValueInput={loanValueInput}
-					setLoanValue={setLoanValue}
-					interestValueInput={interestValueInput}
-					setInterestValue={setInterestValue}
-					minimumPayment={minimumPayment}
-					setMinimumPayment={setMinimumPayment}
-					paymentAmount={paymentAmount}
-					setPaymentAmount={setPaymentAmount}
-					paymentsRemaining={paymentsRemaining}
-					setRemainingPayments={setRemainingPayments}
-				/>
-			</div>
-			<div className="bottom">
-				<History transactions={transactions} />
+			<div>
+				<div className="ultraTop">
+					<h1>Debt-Free Calculator</h1>
+					<div className="buttons">
+						<Button
+							className="button__default"
+							onClick={handleCalculatorReset}
+							text={resetIcon}
+						/>
+					</div>
+				</div>
+				<div className="top">
+					<Calculator
+						recordPayment={recordPayment}
+						loanValueInput={loanValueInput}
+						setLoanValue={setLoanValue}
+						interestValueInput={interestValueInput}
+						setInterestValue={setInterestValue}
+						minimumPayment={minimumPayment}
+						setMinimumPayment={setMinimumPayment}
+						paymentAmount={paymentAmount}
+						setPaymentAmount={setPaymentAmount}
+						paymentsRemaining={paymentsRemaining}
+						setRemainingPayments={setRemainingPayments}
+					/>
+				</div>
+				<div className="bottom">
+					<History transactions={transactions} />
+				</div>
 			</div>
 		</>
 	);
