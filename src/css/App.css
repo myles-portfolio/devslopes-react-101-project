@@ -47,10 +47,17 @@
 	justify-content: space-between;
 }
 
+.buttons {
+	display: flex;
+	gap: 10px;
+}
+
 .button__default {
 	margin: 0.5rem 0;
 	background-color: var(--clr-purple);
-	padding: 0.25rem 0.5rem;
+	padding: 0.25rem 0.25rem;
+	width: 32px;
+	height: 32px;
 	box-shadow: 10px 10px 20px var(--bg-shadow);
 	transition: transform 0.3s ease-in-out;
 }
@@ -78,4 +85,5 @@
 	background-color: var(--bg-component);
 	margin: 0 auto;
 	padding: 2rem;
+	box-shadow: 10px 0px 20px var(--bg-shadow);
 }

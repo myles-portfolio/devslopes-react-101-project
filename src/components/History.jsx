@@ -1,4 +1,5 @@
 import "../css/History.css";
+import { formatCurrency } from "../utils";
 
 export function History({ transactions }) {
 	return (
@@ -13,10 +14,10 @@ export function History({ transactions }) {
 				</div>
 				<div className="hi__container">
 					{transactions.map((transaction, index) => (
-						<div key={index} className="history__item">
-							<div className="hi__detail">${transaction[0]}</div>
+						<div key={index} className="history__items">
+							<div className="hi__detail">{formatCurrency(transaction[0])}</div>
 							<div className="hi__detail">{transaction[1] ? "Yes" : "No"}</div>
-							<div className="hi__detail">${transaction[2]}</div>
+							<div className="hi__detail">{formatCurrency(transaction[2])}</div>
 							<div className="hi__detail">{transaction[3]}</div>
 						</div>
 					))}

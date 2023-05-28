@@ -1,3 +1,9 @@
+export const calculateInterestPayment = (balance, interest) => {
+	const interestCalculated = interest / 100 / 12;
+	let value = interestCalculated * balance;
+	return parseFloat(value);
+};
+
 export const calculateMinimumPayment = (loanValueInput, interestValueInput) => {
 	loanValueInput = parseFloat(loanValueInput);
 	interestValueInput = parseFloat(interestValueInput);
@@ -5,9 +11,10 @@ export const calculateMinimumPayment = (loanValueInput, interestValueInput) => {
 	if (!loanValueInput || isNaN(loanValueInput) || isNaN(interestValueInput)) {
 		return "$0.00";
 	}
-
-	const interestCalculated = interestValueInput / 100 / 12;
-	const interestCharged = interestCalculated * loanValueInput;
+	let interestCharged = calculateInterestPayment(
+		loanValueInput,
+		interestValueInput
+	);
 	const onePercentMinimumCharged = loanValueInput * 0.01;
 	let minimumPayment = interestCharged + onePercentMinimumCharged;
 
@@ -44,4 +51,11 @@ export function calculateRemainingPayments(loanTotal, interestValueInput) {
 
 export function clearInputs() {
 	document.getElementById("calcForm").reset();
+}
+
+export function formatCurrency(value) {
+	return value.toLocaleString("en-US", {
+		style: "currency",
+		currency: "USD",
+	});
 }
