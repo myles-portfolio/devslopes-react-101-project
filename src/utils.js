@@ -39,9 +39,5 @@ export function calculateRemainingPayments(loanTotal, interestValueInput) {
 		let newBalance = (remainingBalance -= minimumPayment);
 		remainingBalance = newBalance.toFixed(2);
 	}
-	console.log("Remaining Balance / Payments:", [
-		remainingBalance,
-		remainingPayments,
-	]);
 	return remainingPayments;
 }

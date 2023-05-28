@@ -1,0 +1,17 @@
+.history__list {
+	display: flex;
+	flex-direction: column;
+}
+
+.history__header,
+.history__item {
+	display: flex;
+	justify-content: space-evenly;
+}
+
+.hh__title {
+	color: var(--clr-violet);
+	font-weight: 600;
+	text-transform: uppercase;
+	font-size: 0.75rem;
+}

@@ -1,9 +1,10 @@
 import { Loan } from "./Loan";
 import { Payment } from "./Payment";
+import "../css/Calculator.css";
 import { useState, useEffect, useRef } from "react";
 import { calculateRemainingPayments, calculateMinimumPayment } from "../utils";
 
-export function Calculator() {
+export function Calculator({ recordPayment }) {
 	const [loanValueInput, setLoanValue] = useState(null);
 	const [interestValueInput, setInterestValue] = useState(null);
 	const [currentBalance, setBalance] = useState(0);
@@ -72,9 +73,14 @@ export function Calculator() {
 		if (paymentAmount < minimumPayment) {
 			handleUnderPayment();
 		} else if (paymentAmount === minimumPayment) {
-			handleMinimumPayment(newBalance, interestValue);
+			handleMinimumPayment(newBalance, interestValue, paymentAmount);
 		} else if (paymentAmount > minimumPayment) {
-			handleOverPayment(adjustedBalance, interestValue);
+			handleOverPayment(
+				newBalance,
+				adjustedBalance,
+				interestValue,
+				paymentAmount
+			);
 		}
 
 		paymentInputRef.current.value = "";
@@ -91,7 +97,7 @@ export function Calculator() {
 		setIsModalOpen(true);
 	};
 
-	const handleMinimumPayment = (newBalance, interestValue) => {
+	const handleMinimumPayment = (newBalance, interestValue, paymentAmount) => {
 		if (newBalance <= 0) {
 			handleNegativeBalance();
 		} else {
@@ -101,11 +107,17 @@ export function Calculator() {
 			);
 			setMinimumPayment(newMinimumPayment);
 			updateRemainingPayments();
+			recordPayment(newBalance, paymentAmount, false);
 			setBalance(newBalance);
 		}
 	};
 
-	const handleOverPayment = (adjustedBalance, interestValue) => {
+	const handleOverPayment = (
+		newBalance,
+		adjustedBalance,
+		interestValue,
+		paymentAmount
+	) => {
 		if (adjustedBalance <= 0) {
 			handleNegativeBalance();
 		} else {
@@ -120,6 +132,7 @@ export function Calculator() {
 			);
 			setRemainingPayments(newPaymentsRemaining);
 			updateRemainingPayments();
+			recordPayment(newBalance, paymentAmount, true);
 			setBalance(adjustedBalance);
 		}
 	};

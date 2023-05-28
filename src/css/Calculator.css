@@ -1,61 +1,3 @@
-#root {
-	max-width: 1280px;
-	margin: 0 auto;
-	padding: 2rem;
-}
-
-.highlight {
-	font-weight: 700;
-	font-size: 0.75rem;
-	text-transform: uppercase;
-	color: var(--clr-violet);
-}
-
-.modal {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
-.modal__content {
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	width: 200px;
-	height: fit-content;
-	background-color: var(--dark-gray);
-	padding: 20px;
-	z-index: 100;
-	box-shadow: 10px 20px 20px var(--bg-shadow);
-}
-
-.modal__overlay {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-color: var(--bg-shadow);
-	z-index: 99;
-}
-
-.top {
-	display: flex;
-	gap: 0.5rem;
-	margin-bottom: 0.5rem;
-}
-
-.top .component__base:nth-child(1) {
-	max-width: 320px;
-}
-
-.component__base {
-	background-color: var(--bg-component);
-	margin: 0 auto;
-	padding: 2rem;
-}
-
 .input__field,
 .loan__form,
 .minimum__payment {
@@ -74,13 +16,9 @@
 	row-gap: 1.25rem;
 }
 
-.input__row,
-.top__component__container {
+.input__row {
 	display: flex;
 	column-gap: 0.5rem;
-}
-
-.input__row {
 	align-items: center;
 }
 
@@ -90,6 +28,12 @@
 	font-weight: 400;
 	margin: 0;
 	color: var(--clr-text-alt);
+}
+
+.input__subtext {
+	font-size: 0.6rem;
+	letter-spacing: 0.05rem;
+	margin-top: 0;
 }
 
 .label {
@@ -141,12 +85,6 @@
 	display: flex;
 	flex-direction: column;
 	row-gap: 0.5rem;
-}
-
-.input__subtext {
-	font-size: 0.6rem;
-	letter-spacing: 0.05rem;
-	margin-top: 0;
 }
 
 .payment__button {
