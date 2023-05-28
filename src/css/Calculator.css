@@ -1,64 +1,7 @@
-#root {
-	max-width: 1280px;
-	margin: 0 auto;
-	padding: 2rem;
-}
-
-.highlight {
-	font-weight: 700;
-	font-size: 0.75rem;
-	text-transform: uppercase;
-	color: var(--clr-violet);
-}
-
-.modal {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
-.modal__content {
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	width: 200px;
-	height: fit-content;
-	background-color: var(--dark-gray);
-	padding: 20px;
-	z-index: 100;
-	box-shadow: 10px 20px 20px var(--bg-shadow);
-}
-
-.modal__overlay {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-color: var(--bg-shadow);
-	z-index: 99;
-}
-
-.top {
-	display: flex;
-	gap: 0.5rem;
-	margin-bottom: 0.5rem;
-}
-
-.top .component__base:nth-child(1) {
-	max-width: 320px;
-}
-
-.component__base {
-	background-color: var(--bg-component);
-	margin: 0 auto;
-	padding: 2rem;
-}
-
 .input__field,
 .loan__form,
-.minimum__payment {
+.minimum__payment,
+.payment__form {
 	display: flex;
 	flex-direction: column;
 }
@@ -74,13 +17,9 @@
 	row-gap: 1.25rem;
 }
 
-.input__row,
-.top__component__container {
+.input__row {
 	display: flex;
 	column-gap: 0.5rem;
-}
-
-.input__row {
 	align-items: center;
 }
 
@@ -92,18 +31,16 @@
 	color: var(--clr-text-alt);
 }
 
+.input__subtext {
+	font-size: 0.6rem;
+	letter-spacing: 0.05rem;
+	margin-top: 0;
+}
+
 .label {
 	text-transform: uppercase;
 	color: var(--clr-violet);
 	word-spacing: 0.25rem;
-}
-
-.payment__details {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	gap: 1rem;
 }
 
 .balance {
@@ -143,14 +80,27 @@
 	row-gap: 0.5rem;
 }
 
-.input__subtext {
-	font-size: 0.6rem;
-	letter-spacing: 0.05rem;
-	margin-top: 0;
+.payment__form {
+	row-gap: 0.75rem;
+}
+
+.payment__details {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
 }
 
 .payment__button {
-	margin-top: 2rem;
+	margin-top: 1rem;
+	transition: transform 0.3s ease-in-out;
+}
+
+.payment__button:hover {
+	transform: translateY(-5px);
+	background-color: var(--clr-violet);
+	box-shadow: 10px 10px 20px var(--bg-shadow);
 }
 
 .payments__remaining {
@@ -158,13 +108,13 @@
 	align-items: center;
 	justify-content: space-between;
 	background-color: var(--bg-field);
-	margin-top: 27px;
+	margin-top: 20px;
 }
 
 .payments__remaining p:nth-child(1) {
 	font-size: 0.75rem;
 	max-width: 200px;
-	margin-left: 20px;
+	margin: 3px 0 3px 20px;
 }
 
 .payments__remaining p:nth-child(2) {

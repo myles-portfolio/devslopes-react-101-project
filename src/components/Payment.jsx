@@ -1,5 +1,7 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import { Input } from "./Input";
 import { Modal } from "./Modal";
+import { Button } from "./Button";
 
 export function Payment({
 	handleChange,
@@ -9,27 +11,38 @@ export function Payment({
 	error,
 	modalState,
 	setModalState,
+	paymentInputRef,
 }) {
-	const displayedBalance = Number(currentBalance).toLocaleString(undefined, {
-		style: "currency",
-		currency: "USD",
-	});
+	const formattedMinimumPayment = !isNaN(minimumPayment)
+		? Number(minimumPayment).toLocaleString(undefined, {
+				style: "currency",
+				currency: "USD",
+		  })
+		: "$0.00";
 
 	return (
 		<div className="component__base">
 			<h3>MAKE A PAYMENT</h3>
 			<div className="payment__details">
 				<div className="balance">
-					<p className="number">{displayedBalance}</p>
+					<p className="number">
+						{Number(currentBalance).toLocaleString(undefined, {
+							style: "currency",
+							currency: "USD",
+						})}
+					</p>
 					<p className="description">BALANCE REMAINING</p>
 				</div>
 				<div className="minimum__payment">
-					<div className="mp__input">
-						<label className="label">Minimum Payment*:</label>
-						<input type="text" value={`${minimumPayment}`} readOnly />
-						<p className="input__subtext">*1% principal payment is required</p>
-					</div>
-					<form className="payment__form">
+					<form id="calcForm" className="payment__form">
+						<Input
+							inputId="minimum"
+							inputLabel="Minimum Payment*:"
+							inputValue={formattedMinimumPayment}
+							inputType="text"
+							inputSubtext="*1% principal payment is required"
+							isReadOnly={true}
+						/>
 						<Input
 							inputId="payment"
 							inputLabel="Payment Amount:"
@@ -37,11 +50,13 @@ export function Payment({
 							inputPlaceholderText="Enter payment amount"
 							onChange={(e) => handleChange("payment", e.target.value)}
 							inputNotation="$USD"
-							inputSubtext=""
+							inputRef={paymentInputRef}
 						/>
-						<button className="payment__button" onClick={handleSubmitPayment}>
-							Submit Payment
-						</button>
+						<Button
+							className="payment__button"
+							onClick={handleSubmitPayment}
+							text="Submit Payment"
+						/>
 					</form>
 					{{ error } && (
 						<Modal isOpen={modalState} onClose={() => setModalState(false)}>
