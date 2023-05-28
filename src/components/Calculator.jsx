@@ -1,15 +1,11 @@
 import { Loan } from "./Loan";
 import { Payment } from "./Payment";
 import { useState, useEffect } from "react";
-import {
-	calculateRemainingPayments,
-	calculateLoanTotal,
-	calculateMinimumPayment,
-} from "../utils";
+import { calculateRemainingPayments, calculateMinimumPayment } from "../utils";
 
 export function Calculator() {
-	const [loanValueInput, setLoanValue] = useState(0);
-	const [interestValueInput, setInterestValue] = useState(0);
+	const [loanValueInput, setLoanValue] = useState(null);
+	const [interestValueInput, setInterestValue] = useState(null);
 	const [currentBalance, setBalance] = useState(0);
 	const [paymentError, setPaymentError] = useState(false);
 	const [paymentAmount, setPaymentAmount] = useState("");
@@ -20,16 +16,20 @@ export function Calculator() {
 	const loanValue = parseFloat(loanValueInput);
 	const interestValue = parseFloat(interestValueInput);
 
+	const paymentsLeft = calculateRemainingPayments(loanValue, interestValue);
+
 	useEffect(() => {
 		if (!isNaN(loanValue) && !isNaN(interestValue)) {
-			const initialBalance = calculateLoanTotal(loanValue, interestValue);
+			const initialBalance = loanValue;
 			setBalance(initialBalance);
 			setMinimumPayment(calculateMinimumPayment(initialBalance, interestValue));
-			setRemainingPayments(calculateRemainingPayments(initialBalance));
+			setRemainingPayments(paymentsLeft);
 		} else {
 			setBalance(loanValue || 0);
+			setRemainingPayments("--");
+			setMinimumPayment(0);
 		}
-	}, [loanValue, interestValue, currentBalance]);
+	}, [loanValue, interestValue, paymentsLeft]);
 
 	const updateLoanValue = (value) => {
 		setLoanValue(value);
@@ -37,6 +37,10 @@ export function Calculator() {
 
 	const updateInterestValue = (value) => {
 		setInterestValue(value);
+	};
+
+	const updateCurrentBalance = (value) => {
+		setBalance(value);
 	};
 
 	const updateRemainingPayments = () => {
@@ -60,8 +64,20 @@ export function Calculator() {
 			setPaymentError(true);
 			setIsModalOpen(true);
 		} else {
-			setBalance(currentBalance - paymentAmount);
-			updateRemainingPayments();
+			const newBalance = currentBalance - parseFloat(paymentAmount);
+			updateCurrentBalance(newBalance);
+			if (newBalance <= 0) {
+				setMinimumPayment(0);
+				setBalance(0);
+				setRemainingPayments(0);
+			} else {
+				const newMinimumPayment = calculateMinimumPayment(
+					newBalance,
+					interestValue
+				);
+				setMinimumPayment(newMinimumPayment);
+				updateRemainingPayments();
+			}
 			setPaymentAmount("");
 		}
 	};

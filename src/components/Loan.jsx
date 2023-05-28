@@ -1,11 +1,11 @@
 import { Input } from "./Input";
 
-export function Loan({ handleChange }) {
+export function Loan({ handleChange, paymentsLeft }) {
 	return (
 		<div className="component__base">
 			<h3>TELL US ABOUT YOUR LOAN</h3>
 			<p className="loan__text">
-				Enter your <span className="highlight">loan amount</span> and
+				Enter your <span className="highlight">loan amount</span> and{" "}
 				<span className="highlight">interest rate</span> below to calculate your
 				minimum monthly payment.
 			</p>
@@ -30,8 +30,8 @@ export function Loan({ handleChange }) {
 				/>
 			</form>
 			<div className="payments__remaining">
-				<p>Number of minimum payments left until debt-free:</p>
-				{/* <p>Remaining Payments</p> */}
+				<p>Number of monthly minimum payments left until debt-free:</p>
+				<p>{isNaN(paymentsLeft) || paymentsLeft === 0 ? "--" : paymentsLeft}</p>
 			</div>
 		</div>
 	);
