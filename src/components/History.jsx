@@ -20,13 +20,19 @@ export function History({ transactions }) {
 					))}
 				</div>
 				<div className="hi__container">
-					{/* I don't know how to make this not repetitive */}
 					{transactions.map((transaction) => (
-						<div key={transaction} className="history__items">
-							<div className="hi__detail">{formatCurrency(transaction[0])}</div>
-							<div className="hi__detail">{transaction[1] ? "Yes" : "No"}</div>
-							<div className="hi__detail">{formatCurrency(transaction[2])}</div>
-							<div className="hi__detail">{transaction[3]}</div>
+						<div key={transaction[3]} className="history__items">
+							{transaction.map((item, index) => (
+								<div key={index} className="hi__detail">
+									{index === 0 || index === 2
+										? formatCurrency(item)
+										: index === 1
+										? item
+											? "Yes"
+											: "No"
+										: item}
+								</div>
+							))}
 						</div>
 					))}
 				</div>
