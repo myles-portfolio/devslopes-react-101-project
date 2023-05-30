@@ -1,28 +1,24 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { Input } from "./Input";
 import { useRef, useState } from "react";
-import { calculatePrincipalPayment } from "../js/utils";
+import {
+	calculatePrincipalPayment,
+	calculateMinimumPayment,
+} from "../js/utils";
 import { Button } from "./Button";
 import { Modal } from "./Modal";
 
 export function Payment({
-	minimumPayment,
 	setPaymentValueInput,
 	currentBalance,
 	interestRate,
 	processPayment,
+	formattedMinimumPayment,
 }) {
 	const [paymentError, setPaymentError] = useState(false);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const paymentInputRef = useRef(null);
-
-	const formattedMinimumPayment = !isNaN(minimumPayment)
-		? Number(minimumPayment).toLocaleString(undefined, {
-				style: "currency",
-				currency: "USD",
-		  })
-		: "$0.00";
 
 	const paymentComponentFormFields = [
 		{
@@ -30,7 +26,8 @@ export function Payment({
 			label: "Minimum Payment*:",
 			type: "text",
 			inputValue: formattedMinimumPayment,
-			subtext: "*1% principal payment is required",
+			subtext:
+				"*1% principal payment is required; Balance <$100 requires total balance payment to complete payoff",
 			readOnly: true,
 		},
 		{
@@ -61,6 +58,10 @@ export function Payment({
 	const handleSubmitPayment = (event) => {
 		event.preventDefault();
 		const parsedPaymentAmount = parseFloat(paymentInputRef.current.value);
+		const minimumPayment = calculateMinimumPayment(
+			currentBalance,
+			interestRate
+		);
 
 		if (isNaN(parsedPaymentAmount)) {
 			setPaymentError(true);

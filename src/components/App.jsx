@@ -3,14 +3,12 @@ import { useState, useEffect } from "react";
 import { Calculator } from "./Calculator";
 import { History } from "./History";
 import { Button } from "./Button";
-import { clearInputs } from "../js/utils";
 
 function App() {
 	const [loanValueInput, setLoanValueInput] = useState("");
 	const [interestValueInput, setInterestValueInput] = useState("");
 	const [currentBalance, setBalance] = useState(0);
 	const [interestRate, setInterest] = useState(0);
-	const [minimumPayment, setMinimumPayment] = useState(0);
 	const [paymentValueInput, setPaymentValueInput] = useState("");
 	const [transactions, setTransactions] = useState([]);
 
@@ -32,16 +30,15 @@ function App() {
 	};
 
 	const handleCalculatorReset = () => {
-		setMinimumPayment(0);
 		setLoanValueInput("");
 		setInterestValueInput("");
+		setPaymentValueInput("");
 		setBalance(0);
 		setInterest(0);
 		setTransactions([]);
-		clearInputs();
 	};
 
-	const resetIcon = <i className="fa-sharp fa-solid fa-arrow-rotate-right"></i>;
+	const resetIcon = <img src="public\reset.png" alt="reset" />;
 
 	return (
 		<>
@@ -64,10 +61,8 @@ function App() {
 						setInterestValueInput={setInterestValueInput}
 						currentBalance={currentBalance}
 						interestRate={interestRate}
-						minimumPayment={minimumPayment}
 						paymentValueInput={paymentValueInput}
 						setPaymentValueInput={setPaymentValueInput}
-						setMinimumPayment={setMinimumPayment}
 						setBalance={setBalance}
 						updatePaymentHistory={updatePaymentHistory}
 					/>

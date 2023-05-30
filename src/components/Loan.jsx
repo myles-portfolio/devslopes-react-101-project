@@ -1,4 +1,3 @@
-import { calculateRemainingPayments } from "../js/utils";
 import { Input } from "./Input";
 import { useRef } from "react";
 
@@ -7,20 +6,8 @@ export function Loan({
 	setLoanValueInput,
 	interestValueInput,
 	setInterestValueInput,
-	currentBalance,
-	interestRate,
+	paymentsRemaining,
 }) {
-	let paymentsRemaining;
-
-	if (currentBalance > 0) {
-		paymentsRemaining = calculateRemainingPayments(
-			currentBalance,
-			interestRate
-		);
-	} else {
-		paymentsRemaining = "--";
-	}
-
 	const loanInputRef = useRef(0);
 	const interestInputRef = useRef(0);
 

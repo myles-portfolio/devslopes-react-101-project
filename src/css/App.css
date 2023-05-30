@@ -60,6 +60,9 @@
 	height: 32px;
 	box-shadow: 10px 10px 20px var(--bg-shadow);
 	transition: transform 0.3s ease-in-out;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .button__default:hover {
