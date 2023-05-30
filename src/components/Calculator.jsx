@@ -1,4 +1,4 @@
-import "../css/calculator.css";
+import "/src/css/Calculator.css";
 import { useState } from "react";
 import { Loan } from "./Loan";
 import { Payment } from "./Payment";

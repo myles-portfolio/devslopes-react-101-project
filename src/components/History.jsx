@@ -1,4 +1,4 @@
-import "../css/history.css";
+import "/src/css/History.css";
 import { formatCurrency } from "../js/utils";
 
 export function History({ transactions }) {
