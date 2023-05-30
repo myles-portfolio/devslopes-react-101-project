@@ -4,25 +4,47 @@ export const calculateInterestPayment = (balance, interest) => {
 	return parseFloat(value);
 };
 
-export const calculateMinimumPayment = (loanValueInput, interestValueInput) => {
-	loanValueInput = parseFloat(loanValueInput);
-	interestValueInput = parseFloat(interestValueInput);
+export const calculateMinimumPayment = (balance, interest) => {
+	balance = parseFloat(balance);
+	interest = parseFloat(interest);
 
-	if (!loanValueInput || isNaN(loanValueInput) || isNaN(interestValueInput)) {
+	if (!balance || isNaN(balance) || isNaN(interest)) {
 		return "$0.00";
 	}
-	let interestCharged = calculateInterestPayment(
-		loanValueInput,
-		interestValueInput
-	);
-	const onePercentMinimumCharged = loanValueInput * 0.01;
+	let interestCharged = calculateInterestPayment(balance, interest);
+	const onePercentMinimumCharged = balance * 0.01;
 	let minimumPayment = interestCharged + onePercentMinimumCharged;
 
-	if (loanValueInput <= 100) {
-		minimumPayment = loanValueInput + 0.01 * loanValueInput;
+	if (balance <= 100) {
+		minimumPayment = balance + 0.01 * balance;
 	}
 
-	return minimumPayment.toFixed(2);
+	return parseFloat(minimumPayment.toFixed(2));
+};
+
+export const calculatePrincipalPayment = (
+	currentBalance,
+	interestValue,
+	paymentAmount,
+	minimumPayment
+) => {
+	console.log("Min Payment:", minimumPayment);
+	console.log("Payment Amount:", paymentAmount);
+	let isOverPayment;
+	if (paymentAmount === minimumPayment) {
+		isOverPayment = false;
+	} else {
+		isOverPayment = true;
+	}
+
+	let interestPayment = calculateInterestPayment(currentBalance, interestValue);
+	interestPayment = parseFloat(interestPayment.toFixed(2));
+	paymentAmount = parseFloat(paymentAmount);
+	const principalPayment = parseFloat(
+		(paymentAmount - interestPayment).toFixed(2)
+	);
+	console.log("Payment:", [principalPayment, isOverPayment]);
+	return [principalPayment, isOverPayment];
 };
 
 export function calculateRemainingPayments(loanTotal, interestValueInput) {

@@ -1,11 +1,59 @@
+import { calculateRemainingPayments } from "../js/utils";
 import { Input } from "./Input";
+import { useRef } from "react";
 
 export function Loan({
-	handleChange,
-	paymentsLeft,
-	loanInputRef,
-	interestInputRef,
+	loanValueInput,
+	setLoanValueInput,
+	interestValueInput,
+	setInterestValueInput,
+	currentBalance,
+	interestRate,
 }) {
+	let paymentsRemaining;
+
+	if (currentBalance > 0) {
+		paymentsRemaining = calculateRemainingPayments(
+			currentBalance,
+			interestRate
+		);
+	} else {
+		paymentsRemaining = "--";
+	}
+
+	const loanInputRef = useRef(0);
+	const interestInputRef = useRef(0);
+
+	const loanComponentFormFields = [
+		{
+			id: "loan",
+			label: "Loan Amount:",
+			inputValue: loanValueInput,
+			phText: "Enter dollar amount",
+			notation: "$USD",
+			inputRef: loanInputRef,
+		},
+		{
+			id: "interest",
+			label: "Interest Rate*:",
+			inputValue: interestValueInput,
+			phText: "Enter an interest rate",
+			notation: "%",
+			subtext: "*Fixed Annual",
+			inputRef: interestInputRef,
+		},
+	];
+
+	const handleInputChange = (e) => {
+		const { id, value } = e.target;
+
+		if (id === "loan") {
+			setLoanValueInput(value);
+		} else if (id === "interest") {
+			setInterestValueInput(value);
+		}
+	};
+
 	return (
 		<div className="component__base">
 			<h3>TELL US ABOUT YOUR LOAN</h3>
@@ -17,31 +65,32 @@ export function Loan({
 			</p>
 
 			<form id="calcForm" className="loan__form">
-				<Input
-					inputId="loan"
-					inputLabel="Loan Amount:"
-					inputType="number"
-					inputPlaceholderText="Enter dollar amount"
-					onChange={(e) => handleChange("loan", e.target.value)}
-					inputNotation="$USD"
-					inputSubtext=""
-					inputRef={loanInputRef}
-				/>
-				<Input
-					inputId="interest"
-					inputLabel="Interest Rate*:"
-					inputType="number"
-					inputPlaceholderText="Enter an interest rate"
-					onChange={(e) => handleChange("interest", e.target.value)}
-					inputNotation="%"
-					inputSubtext="*Fixed Annual"
-					inputRef={interestInputRef}
-				/>
+				{loanComponentFormFields.map((item) => {
+					const { id, label, inputValue, phText, notation, subtext, inputRef } =
+						item;
+					return (
+						<Input
+							key={id}
+							inputId={id}
+							inputLabel={label}
+							inputValue={inputValue}
+							inputPlaceholderText={phText}
+							handleInputChange={handleInputChange}
+							inputNotation={notation}
+							inputSubtext={subtext && subtext}
+							inputRef={inputRef}
+						/>
+					);
+				})}
 			</form>
 
 			<div className="payments__remaining">
 				<p>Number of monthly minimum payments left until debt-free:</p>
-				<p>{isNaN(paymentsLeft) || paymentsLeft === 0 ? "--" : paymentsLeft}</p>
+				<p>
+					{isNaN(paymentsRemaining) || paymentsRemaining === 0
+						? "--"
+						: paymentsRemaining}
+				</p>
 			</div>
 		</div>
 	);
