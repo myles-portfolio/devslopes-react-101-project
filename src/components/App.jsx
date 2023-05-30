@@ -38,8 +38,6 @@ function App() {
 		setTransactions([]);
 	};
 
-	const resetIcon = <img src="\reset.png" alt="reset" />;
-
 	return (
 		<>
 			<div>
@@ -49,7 +47,6 @@ function App() {
 						<Button
 							className="button__default"
 							onClick={handleCalculatorReset}
-							text={resetIcon}
 						/>
 					</div>
 				</div>
