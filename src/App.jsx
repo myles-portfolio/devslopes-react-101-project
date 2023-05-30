@@ -1,8 +1,7 @@
-import "../css/app.css";
 import { useState, useEffect } from "react";
-import { Calculator } from "./Calculator";
-import { History } from "./History";
-import { Button } from "./Button";
+import { Calculator } from "./components/Calculator";
+import { History } from "./components/History";
+import { Button } from "./components/Button";
 
 function App() {
 	const [loanValueInput, setLoanValueInput] = useState("");
@@ -38,6 +37,8 @@ function App() {
 		setTransactions([]);
 	};
 
+	const resetIcon = <img src="\reset.png" alt="reset" />;
+
 	return (
 		<>
 			<div>
@@ -47,6 +48,7 @@ function App() {
 						<Button
 							className="button__default"
 							onClick={handleCalculatorReset}
+							text={resetIcon}
 						/>
 					</div>
 				</div>
