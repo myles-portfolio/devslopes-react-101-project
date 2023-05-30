@@ -38,7 +38,7 @@ function App() {
 		setTransactions([]);
 	};
 
-	const resetIcon = <img src="public\reset.png" alt="reset" />;
+	const resetIcon = <img src="\reset.png" alt="reset" />;
 
 	return (
 		<>
