@@ -1,29 +1,27 @@
 export function Input({
 	inputId,
 	inputLabel,
-	inputValue,
 	inputType,
+	inputValue,
 	inputPlaceholderText,
-	onChange,
+	handleInputChange,
 	inputNotation,
 	inputSubtext,
 	inputRef,
 	isReadOnly,
 }) {
-	const readOnlyProps = isReadOnly ? { readOnly: true } : {};
-
 	return (
-		<div id={inputId} className="input__field">
+		<div className="input__field">
 			<label className="label">{inputLabel}</label>
 			<div className="input__row">
 				<input
+					id={inputId}
 					type={inputType}
 					value={inputValue}
 					placeholder={inputPlaceholderText}
-					onChange={onChange}
+					onChange={handleInputChange}
 					ref={inputRef}
-					{...readOnlyProps}
-					max="999999999"
+					readOnly={isReadOnly ? "readOnly" : undefined}
 				/>
 				<p className="input__note">{inputNotation}</p>
 			</div>

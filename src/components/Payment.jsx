@@ -1,24 +1,92 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { Input } from "./Input";
-import { Modal } from "./Modal";
+import { useRef, useState } from "react";
+import {
+	calculatePrincipalPayment,
+	calculateMinimumPayment,
+} from "../js/utils";
 import { Button } from "./Button";
+import { Modal } from "./Modal";
 
 export function Payment({
-	handleChange,
-	minimumPayment,
-	handleSubmitPayment,
+	setPaymentValueInput,
 	currentBalance,
-	error,
-	modalState,
-	setModalState,
-	paymentInputRef,
+	interestRate,
+	processPayment,
+	formattedMinimumPayment,
 }) {
-	const formattedMinimumPayment = !isNaN(minimumPayment)
-		? Number(minimumPayment).toLocaleString(undefined, {
-				style: "currency",
-				currency: "USD",
-		  })
-		: "$0.00";
+	const [paymentError, setPaymentError] = useState(false);
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
+	const paymentInputRef = useRef(null);
+
+	const paymentComponentFormFields = [
+		{
+			id: "minimum",
+			label: "Minimum Payment*:",
+			type: "text",
+			inputValue: formattedMinimumPayment,
+			subtext:
+				"*1% principal payment is required; Balance <$100 requires total balance payment to complete payoff",
+			readOnly: true,
+		},
+		{
+			id: "payment",
+			label: "Payment Amount:",
+			phText: "Enter payment amount",
+			notation: "$USD",
+			subtext: "*Fixed Annual",
+			inputRef: paymentInputRef,
+			readOnly: false,
+		},
+	];
+
+	const handleInputChange = (e) => {
+		const { id, value } = e.target;
+
+		if (id === "payment") {
+			setPaymentValueInput(value);
+			setPaymentError(false);
+		}
+	};
+
+	const handleUnderPayment = () => {
+		setPaymentError(true);
+		setIsModalOpen(true);
+	};
+
+	const handleSubmitPayment = (event) => {
+		event.preventDefault();
+		const parsedPaymentAmount = parseFloat(paymentInputRef.current.value);
+		const minimumPayment = calculateMinimumPayment(
+			currentBalance,
+			interestRate
+		);
+
+		if (isNaN(parsedPaymentAmount)) {
+			setPaymentError(true);
+			return;
+		}
+
+		if (parsedPaymentAmount < minimumPayment) {
+			handleUnderPayment();
+		} else {
+			const principalPayment = calculatePrincipalPayment(
+				currentBalance,
+				interestRate,
+				parsedPaymentAmount,
+				minimumPayment
+			);
+			processPayment(
+				parsedPaymentAmount,
+				principalPayment,
+				currentBalance,
+				interestRate
+			);
+		}
+
+		paymentInputRef.current.value = "";
+	};
 
 	return (
 		<div className="component__base">
@@ -35,37 +103,49 @@ export function Payment({
 				</div>
 				<div className="minimum__payment">
 					<form id="calcForm" className="payment__form">
-						<Input
-							inputId="minimum"
-							inputLabel="Minimum Payment*:"
-							inputValue={formattedMinimumPayment}
-							inputType="text"
-							inputSubtext="*1% principal payment is required"
-							isReadOnly={true}
-						/>
-						<Input
-							inputId="payment"
-							inputLabel="Payment Amount:"
-							inputType="number"
-							inputPlaceholderText="Enter payment amount"
-							onChange={(e) => handleChange("payment", e.target.value)}
-							inputNotation="$USD"
-							inputRef={paymentInputRef}
-						/>
+						{paymentComponentFormFields.map((item) => {
+							const {
+								id,
+								label,
+								type,
+								inputValue,
+								phText,
+								notation,
+								subtext,
+								inputRef,
+								readOnly,
+							} = item;
+							return (
+								<Input
+									key={id}
+									inputId={id}
+									inputLabel={label}
+									inputType={type}
+									inputValue={inputValue}
+									inputPlaceholderText={phText}
+									handleChange={handleInputChange}
+									inputNotation={notation}
+									inputSubtext={subtext && subtext}
+									inputRef={inputRef}
+									isReadOnly={readOnly}
+								/>
+							);
+						})}
 						<Button
 							className="payment__button"
 							onClick={handleSubmitPayment}
 							text="Submit Payment"
 						/>
 					</form>
-					{{ error } && (
-						<Modal isOpen={modalState} onClose={() => setModalState(false)}>
+					{paymentError && (
+						<Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
 							<p className="error">
-								Payment amount cannot be less than the minimum payment.
+								Payment amount must be a number & cannot be less than the
+								minimum payment.
 							</p>
 							<button
 								onClick={() => {
-									setModalState(false);
+									setIsModalOpen(false);
 								}}
 							>
 								Close
