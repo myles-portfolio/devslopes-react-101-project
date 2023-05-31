@@ -1,42 +1,43 @@
-import { useState } from "react";
-import "./css/App.css";
+import { useState, useEffect } from "react";
 import { Calculator } from "./components/Calculator";
 import { History } from "./components/History";
 import { Button } from "./components/Button";
-import { clearInputs } from "./utils";
 
 function App() {
-	const [loanValueInput, setLoanValue] = useState(0);
-	const [interestValueInput, setInterestValue] = useState(0);
-	const [minimumPayment, setMinimumPayment] = useState(0);
-	const [paymentAmount, setPaymentAmount] = useState("");
-	const [paymentsRemaining, setRemainingPayments] = useState(0);
+	const [loanValueInput, setLoanValueInput] = useState("");
+	const [interestValueInput, setInterestValueInput] = useState("");
+	const [currentBalance, setBalance] = useState(0);
+	const [interestRate, setInterest] = useState(0);
+	const [paymentValueInput, setPaymentValueInput] = useState("");
 	const [transactions, setTransactions] = useState([]);
 
-	const recordPayment = (balance, payment, overPayment) => {
-		const transactionBalance = parseFloat(balance.toFixed(2));
-		const transactionPayment = parseFloat(payment);
-		const isOverPayment = overPayment;
-		const transactionDate = new Date().toLocaleString();
-		const updatedTransaction = [
-			...transactions,
-			[transactionPayment, isOverPayment, transactionBalance, transactionDate],
-		];
+	useEffect(() => {
+		const balance = parseFloat(loanValueInput) || 0;
+		const interest = parseFloat(interestValueInput) || 0;
 
-		setTransactions(updatedTransaction);
+		setBalance(balance);
+		setInterest(interest);
+	}, [loanValueInput, interestValueInput, paymentValueInput]);
+
+	const updatePaymentHistory = (balance, payment, isOverPayment) => {
+		const date = new Date().toLocaleString();
+		const transaction = [
+			...transactions,
+			[payment, isOverPayment, balance, date],
+		];
+		setTransactions(transaction);
 	};
 
 	const handleCalculatorReset = () => {
-		setMinimumPayment(0);
-		setLoanValue(0);
-		setInterestValue(0);
-		setPaymentAmount(0);
-		setRemainingPayments(0);
+		setLoanValueInput("");
+		setInterestValueInput("");
+		setPaymentValueInput("");
+		setBalance(0);
+		setInterest(0);
 		setTransactions([]);
-		clearInputs();
 	};
 
-	const resetIcon = <i className="fa-sharp fa-solid fa-arrow-rotate-right"></i>;
+	const resetIcon = <img src="\reset.png" alt="reset" />;
 
 	return (
 		<>
@@ -53,17 +54,16 @@ function App() {
 				</div>
 				<div className="top">
 					<Calculator
-						recordPayment={recordPayment}
 						loanValueInput={loanValueInput}
-						setLoanValue={setLoanValue}
+						setLoanValueInput={setLoanValueInput}
 						interestValueInput={interestValueInput}
-						setInterestValue={setInterestValue}
-						minimumPayment={minimumPayment}
-						setMinimumPayment={setMinimumPayment}
-						paymentAmount={paymentAmount}
-						setPaymentAmount={setPaymentAmount}
-						paymentsRemaining={paymentsRemaining}
-						setRemainingPayments={setRemainingPayments}
+						setInterestValueInput={setInterestValueInput}
+						currentBalance={currentBalance}
+						interestRate={interestRate}
+						paymentValueInput={paymentValueInput}
+						setPaymentValueInput={setPaymentValueInput}
+						setBalance={setBalance}
+						updatePaymentHistory={updatePaymentHistory}
 					/>
 				</div>
 				<div className="bottom">
