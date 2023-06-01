@@ -41,9 +41,9 @@ function App() {
 
 	return (
 		<>
-			<div>
+			<main>
 				<div className="ultraTop">
-					<h1>Debt-Free Calculator</h1>
+					<h1>Debt Repayment Calculator</h1>
 					<div className="buttons">
 						<Button
 							className="button__default"
@@ -69,7 +69,7 @@ function App() {
 				<div className="bottom">
 					<History transactions={transactions} />
 				</div>
-			</div>
+			</main>
 		</>
 	);
 }
